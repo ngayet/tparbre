@@ -12,9 +12,8 @@ typedef struct noeud{
 }Noeud;
 
 void inserer(Noeud** arbre, Point point);
-
 void supprimer(Noeud** arbre, Point point);
-
 void afficher(Noeud* arbre);
 void saisie(Noeud** arbre);
+
 #endif

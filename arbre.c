@@ -9,6 +9,7 @@ int main(int argc, char const *argv[]) {
         inserer(&arbre, creerPoint(rand()%11,rand()%11,rand()%11));
     }
     saisie(&arbre);
+    printf("coucou");
     return 0;
 }
 
