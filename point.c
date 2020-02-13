@@ -11,24 +11,24 @@
 //     return 0;
 // }
 
-/**
- * Creer un nouveau point.
- * Complexité en temps : O(1).
- * Complexité en mémoire : O(1).
- *
- * @param x     Initialise la valeur x du nouveau point.
- * @param y     Initialise la valeur y du nouveau point.
- * @param z     Initialise la valeur z du nouveau point.
- * @return      L'adresse du nouveau point.
- */
-Point creerPoint(int x, int y, int z){
-    Point* nouveauPoint = malloc(sizeof(Point));
-
-    nouveauPoint->x = x;
-    nouveauPoint->y = y;
-    nouveauPoint->z = z;
-
-    return *nouveauPoint;
+int egal(Point point_1, Point point_2)
+{
+    if (dist(point_1, point_2) == 0)
+    {
+        return EGAL;
+    }
+    else if (distOrigine(point_1) == distOrigine(point_2))
+    {
+        return DISTANCE_EGAL_COORDONNEES_NON_EGAL;
+    }
+    else if (distOrigine(point_1) > distOrigine(point_2))
+    {
+        return POINT_1_PLUS_GRAND;
+    }
+    else
+    {
+        return POINT_1_PLUS_PETIT;
+    }
 }
 
 /**
@@ -40,9 +40,10 @@ Point creerPoint(int x, int y, int z){
  * @param p2    Deuxième point.
  * @return      Un double reprensetant la distance entre deux points.
  */
-double dist(Point p1, Point p2){
+double dist(Point p1, Point p2)
+{
 
-    return sqrt(pow((p1.x - p2.x),2) + pow((p1.y - p2.y),2) + pow((p1.z - p2.z),2));
+    return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2) + pow((p1.z - p2.z), 2));
 }
 
 /**
@@ -53,7 +54,8 @@ double dist(Point p1, Point p2){
  * @param point    Point.
  * @return         Un double reprensetant la distance entre l'origine et le point.
  */
-double distOrigine(Point point){
+double distOrigine(Point point)
+{
 
-    return sqrt(pow((point.x),2) + pow((point.y),2) + pow((point.z),2));
+    return sqrt(pow((point.x), 2) + pow((point.y), 2) + pow((point.z), 2));
 }
