@@ -1,7 +1,7 @@
 BIN=prog
 OBJECTS=point.o arbre.o
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-g -Wall
 
 all: $(BIN)
 

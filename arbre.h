@@ -11,12 +11,10 @@ typedef struct noeud{
     struct noeud* enfant_droit;
 }Noeud;
 
-
 void inserer(Noeud** arbre, Point point);
 void supprimer(Noeud** arbre, Point point);
 void afficher(Noeud* arbre);
-Noeud* rechercher(Noeud** arbre, Point point);
-
+Noeud **Frechercher(Noeud** arbre, Point point);
 
 void saisie(Noeud** arbre);
 Point saisieCoordonnees();
