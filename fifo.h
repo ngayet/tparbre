@@ -1,13 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "arbre.h"
 
-typedef struct {
-/* Ã€ COMPLÃ‰TER */
+typedef struct fifo{
+int taille;  // nombre maxi dans la file
+int queue; // indice du dernier élément enfilé
+int tete; // indice du prochain élément à défiler
+Noeud **tabnoeuds;  // adresse du 1er élément du tableau tabnoeuds
 } Fifo ;
 
 Fifo * initFifo(int size) ;
     // renvoit une nouvelle file (vide) intitialisÃ©e
+
 
 void freeFifo(Fifo *fifo) ;
     // dÃ©salloue la file et ce quâ€™elle contient
@@ -27,7 +32,7 @@ bool enfiler(Fifo *fifo, char element) ;
     // element est de type char dans un premier temps pour pouvoir tester facilement,
     // il faudra modifier le prototype pour travailler sur les arbres
 
-/* Ã€ COMPLÃ‰TER */ defiler(/* Ã€ COMPLÃ‰TER */) ;
+Noeud* defiler(Fifo *fifo);
     // retourne vrai si le defilage a rÃ©ussi
 
 void printFifo(Fifo *fifo) ;

@@ -18,9 +18,9 @@ int main(int argc, char const *argv[])
 
 /**
  * @brief Insere un nouveau point dans l'arbre.
- * 
- * @param arbre 
- * @param point 
+ *
+ * @param arbre
+ * @param point
  */
 void inserer(Noeud **arbre, Point point)
 {
@@ -48,28 +48,28 @@ void inserer(Noeud **arbre, Point point)
 
 /**
  * @brief Retourne le pointeur du noeud contenant le point cherché
- * 
- * @param arbre 
- * @param point 
- * @return Noeud* 
+ *
+ * @param arbre
+ * @param point
+ * @return Noeud*
  */
-Noeud **rechercher(Noeud **arbre, Point point)
+Noeud *rechercher(Noeud *arbre, Point point)
 {
-    if (*arbre != NULL)
+    if (arbre != NULL)
     {
-        int testEgal = egal((*arbre)->point, point);
+        int testEgal = egal(arbre->point, point);
 
         if (testEgal == POINT_1_PLUS_GRAND)
         {
-            return rechercher(&((*arbre)->enfant_gauche), point);
+            return rechercher(arbre->enfant_gauche, point);
         }
         else if (testEgal == POINT_1_PLUS_PETIT)
         {
-            return rechercher(&((*arbre)->enfant_droit), point);
+            return rechercher(arbre->enfant_droit, point);
         }
         else if (testEgal == DISTANCE_EGAL_COORDONNEES_NON_EGAL)
         {
-            return rechercher(&((*arbre)->enfant_droit), point);
+            return rechercher(arbre->enfant_droit, point);
         }
         else
         {
@@ -81,20 +81,20 @@ Noeud **rechercher(Noeud **arbre, Point point)
 
 /**
  * @brief Supprime un point de l'arbre.
- * 
- * @param arbre 
- * @param point 
+ *
+ * @param arbre
+ * @param point
  */
 void supprimer(Noeud **arbre, Point point)
 {
-    
+
     if(*arbre != NULL)
     {
-        if (egal((*arbre)->point, point)== POINT_1_PLUS_PETIT)
+        if (egal((*arbre)->point, point) == POINT_1_PLUS_PETIT)
         {
             supprimer(&(*arbre)->enfant_droit, point);
         }
-        else if (egal((*arbre)->point, point)== POINT_1_PLUS_GRAND)
+        else if (egal((*arbre)->point, point) == POINT_1_PLUS_GRAND)
         {
             supprimer(&(*arbre)->enfant_gauche, point);
         }
@@ -103,7 +103,7 @@ void supprimer(Noeud **arbre, Point point)
             free(*arbre);
             if ((*arbre)->enfant_gauche == NULL && (*arbre)->enfant_droit == NULL)
             {
-
+                *arbre = NULL;
             }
             else if((*arbre)->enfant_droit == NULL)
             {
@@ -123,16 +123,14 @@ void supprimer(Noeud **arbre, Point point)
                 (*arbre)->point = temp->point;
                 supprimer(&(*arbre)->enfant_gauche, temp->point);
             }
-            
-            
         }
     }
 }
 
 /**
  * @brief Affiche l'arbre.
- * 
- * @param arbre 
+ *
+ * @param arbre
  */
 void afficher(Noeud *arbre)
 {
@@ -147,8 +145,8 @@ void afficher(Noeud *arbre)
 
 /**
  * @brief Retourne un point après une saisie de ses coordonnées.
- * 
- * @return Point 
+ *
+ * @return Point
  */
 Point saisieCoordonnees()
 {
@@ -166,8 +164,8 @@ Point saisieCoordonnees()
 
 /**
  * @brief Gère l'affichage dans la console.
- * 
- * @param arbre 
+ *
+ * @param arbre
  */
 void saisie(Noeud **arbre)
 {
@@ -206,7 +204,7 @@ void saisie(Noeud **arbre)
             printf("\n");
             break;
         case 4:
-            temp = *(rechercher(arbre, saisieCoordonnees()));
+            temp = (rechercher(*arbre, saisieCoordonnees()));
             if (temp != NULL)
             {
                 printf("Le point est présent dans l'arbre.\n\n");
