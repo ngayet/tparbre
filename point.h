@@ -1,9 +1,9 @@
+#ifndef point_h
+#define point_h
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-
-#ifndef point_h
-#define point_h
 
 typedef struct point{
     int x;
