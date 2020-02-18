@@ -13,7 +13,7 @@ int main()
 
     for (int i = 0; i < 10; i++)
     {
-        inserer(&arbre, (Point){rand() % 11, rand() % 11, rand() % 11});
+        inserer(&arbre, (Point){rand() % 6, rand() % 6, rand() % 6});
         // insererPoint(&arbre, (Point){i, 0, 0});
     }
     saisie(&arbre);

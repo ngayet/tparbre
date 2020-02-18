@@ -1,4 +1,5 @@
 #include "arbre.h"
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
 /**
  * @brief Insere un nouveau point dans l'arbre.
@@ -127,33 +128,77 @@ void afficher(Noeud *arbre)
     }
 }
 
+void printSpace(int count)
+{
+    for (int i = 0; i < count; i++)
+    {
+        printf(" ");
+    }
+}
+
+int nbLine(Noeud *arbre)
+{
+    if (arbre == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        int somme = 1;
+
+        somme += MAX(nbLine(arbre->enfant_droit), nbLine(arbre->enfant_gauche));
+
+        return somme;
+    }
+}
+
 void pprintTree(Noeud *arbre)
 {
     Noeud *temp;
-    Fifo *fifo = initFifo(20);
+    int nb_line = nbLine(arbre);
+    Fifo *fifo = initFifo(pow(2,nb_line));
     enfiler(fifo, arbre);
-
     int widthCount = 1;
-    while (widthCount != 0)
+    int startSpace = 0;
+    int nbSpace = 0;
+    
+
+    for (int i = 1; i < nb_line; i++)
     {
-        for (size_t i = 0; i < widthCount; i++)
+        startSpace = 1 + (startSpace * 2);
+        nbSpace = 2 + (2 * nbSpace);
+    }
+
+    printSpace(startSpace);
+    for (int i = 1; i <= nb_line; i++)
+    {
+
+        for (int j = 0; j < widthCount; j++)
         {
             temp = defiler(fifo);
+
             if (temp)
             {
-                printf("(%.1f)", distOrigine(temp->point));
+                printf("%i", (int)(10 * distOrigine(temp->point)));
                 enfiler(fifo, temp->enfant_gauche);
                 enfiler(fifo, temp->enfant_droit);
             }
             else
             {
-                printf("NULL ");
+                // on empile quand même pour gérer l'espacement de la prochaine ligne.
+                printf("  ");
+                enfiler(fifo, NULL);
+                enfiler(fifo, NULL);
             }
+            printSpace(nbSpace);
         }
+
         printf("\n");
-        if (fifo->tete <= fifo->queue)
-            widthCount = fifo->queue - fifo->tete;
-        else
-            widthCount = fifo->queue + (fifo->taille - fifo->tete);
+        startSpace = (startSpace - 1) / 2;
+        nbSpace = (nbSpace - 2) / 2;
+        printSpace(startSpace);
+
+        widthCount = fifo->nbNoeuds;
     }
+    printf("nombre de colonnes : %i", nb_line);
 }

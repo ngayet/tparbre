@@ -10,6 +10,7 @@ typedef struct fifo{
 int taille;  // nombre maxi dans la file
 int queue; // indice du dernier élément enfilé
 int tete; // indice du prochain élément à défiler
+int nbNoeuds; // nombre de noeuds dans la file
 struct noeud **tabnoeuds;  // adresse du 1er élément du tableau tabnoeuds
 } Fifo ;
 
@@ -24,11 +25,11 @@ bool isEmpty(Fifo *fifo) ;
 
 bool isFull(Fifo *fifo);
 
-struct noeud* head(Fifo *fifo) ;
-    // renvoit la valeur de lâ€™Ã©lÃ©ment stockÃ© en tÃªte de la file
-
 struct noeud* queue(Fifo *fifo) ;
     // renvoit l'adresse de l'Ã©lÃ©ment stockÃ© en queue de la file
+
+struct noeud* head(Fifo *fifo) ;
+    // renvoit la valeur de lâ€™Ã©lÃ©ment stockÃ© en tÃªte de la file
 
 bool enfiler(Fifo *fifo, struct noeud *noeud);
     // retourne vrai si lâ€™enfilage a rÃ©ussi

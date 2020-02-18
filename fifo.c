@@ -7,6 +7,7 @@ Fifo *initFifo(int taille)
     fifo->tabnoeuds = malloc(taille * sizeof(Noeud *));
     fifo->queue = 0;
     fifo->tete = 0;
+    fifo->nbNoeuds = 0;
     return fifo;
 }
 
@@ -25,10 +26,10 @@ bool enfiler(Fifo *fifo, Noeud *noeud)
     }
     else
     {
-        if (fifo->queue == fifo->taille)
+        fifo->nbNoeuds++;
+        *((fifo->tabnoeuds) + (fifo->queue++)) = noeud;
+        if (fifo->queue >= (fifo->taille - 1))
             fifo->queue = 0;
-        *((fifo->tabnoeuds) + (fifo->queue)++) = noeud;
-
         return true;
     }
 }
@@ -44,23 +45,24 @@ Noeud *defiler(Fifo *fifo)
     }
     else
     {
-
-        if (fifo->tete == fifo->taille)
+        fifo->nbNoeuds --;
+        if (fifo->tete == fifo->taille - 1)
+        {
+            int buff = fifo->tete;
             fifo->tete = 0;
+            return (fifo->tabnoeuds)[buff];
+        }
         return (fifo->tabnoeuds)[fifo->tete++];
-        
     }
 }
 bool isEmpty(Fifo *fifo)
 {
-    return (fifo->tete) == (fifo->queue);
+    return fifo->nbNoeuds == 0;
 }
 
 bool isFull(Fifo *fifo)
 {
-    return (fifo->tete) == ((fifo->queue) + 1) ||
-           ((fifo->tete) == 0 &&
-            (fifo->queue) == (fifo->taille));
+    return fifo->nbNoeuds == fifo->taille;
 }
 
 Noeud *head(Fifo *fifo)
@@ -71,8 +73,6 @@ Noeud *head(Fifo *fifo)
 
 Noeud *queue(Fifo *fifo)
 {
-    if (fifo->queue == fifo->taille)
-        return *(fifo->tabnoeuds);
     return *(fifo->tabnoeuds) + (fifo->queue);
 }
 // renvoit l'adresse de l'Ã©lÃ©ment stockÃ© en queue de la file
