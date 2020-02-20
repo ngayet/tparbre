@@ -6,16 +6,60 @@
 #include "point.h"
 #include "fifo.h"
 
-typedef struct noeud{
+typedef struct node
+{
     Point point;
-    struct noeud* enfant_gauche;
-    struct noeud* enfant_droit;
-}Noeud;
+    struct node *leftChild;
+    struct node *rightChild;
+} Node;
 
-void inserer(Noeud** arbre, Point point);
-void supprimer(Noeud** arbre, Point point);
-void afficher(Noeud* arbre);
-Noeud *rechercher(Noeud* arbre, Point point);
-void pprintTree(Noeud* arbre);
+/**
+ * @brief Insere un nouveau point dans l'arbre.
+ * Complexité en temps : O(n).
+ * Complexité en mémoire : O(1).
+ *
+ * @param tree
+ * @param point
+ */
+void inserer(Node **tree, Point point);
+
+/**
+ * @brief Retourne le pointeur du noeud contenant le point cherché.
+ * Complexité en temps : O(n).
+ * Complexité en mémoire : O(1).
+ *
+ * @param tree
+ * @param point
+ * @return Noeud*
+ */
+Node *rechercher(Node *tree, Point point);
+
+/**
+ * @brief Supprime un point de l'arbre.
+ * Complexité en temps : O(n).
+ * Complexité en mémoire : O(1).
+ *
+ * @param tree
+ * @param point
+ */
+void supprimer(Node **tree, Point point);
+
+/**
+ * @brief Affiche l'arbre.
+ * Complexité en temps : O(n).
+ * Complexité en mémoire : O(1).
+ *
+ * @param tree
+ */
+void afficher(Node *tree);
+
+/**
+ * @brief 
+ * Complexité en temps : O(2^n).
+ * Complexité en mémoire : O(2^n).
+ * 
+ * @param tree 
+ */
+void pprintTree(Node *tree);
 
 #endif

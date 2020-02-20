@@ -1,23 +1,23 @@
 #include "fifo.h"
 
-Fifo *initFifo(int taille)
+Fifo *initFifo(int size)
 {
     Fifo *fifo = malloc(sizeof(Fifo));
-    fifo->taille = taille;
-    fifo->tabnoeuds = malloc(taille * sizeof(Noeud *));
+    fifo->size = size;
+    fifo->tabNodes = malloc(size * sizeof(Node *));
     fifo->queue = 0;
-    fifo->tete = 0;
+    fifo->head = 0;
     fifo->nbNoeuds = 0;
     return fifo;
 }
 
 void freeFifo(Fifo *fifo)
 {
-    free(fifo->tabnoeuds);
+    free(fifo->tabNodes);
     free(fifo);
 }
 
-bool enfiler(Fifo *fifo, Noeud *noeud)
+bool enfiler(Fifo *fifo, Node *noeud)
 {
     if (isFull(fifo))
     {
@@ -27,8 +27,8 @@ bool enfiler(Fifo *fifo, Noeud *noeud)
     else
     {
         fifo->nbNoeuds++;
-        *((fifo->tabnoeuds) + (fifo->queue++)) = noeud;
-        if (fifo->queue >= (fifo->taille - 1))
+        *((fifo->tabNodes) + (fifo->queue++)) = noeud;
+        if (fifo->queue >= (fifo->size - 1))
             fifo->queue = 0;
         return true;
     }
@@ -36,7 +36,7 @@ bool enfiler(Fifo *fifo, Noeud *noeud)
 // retourne vrai si lâ€™enfilage a rÃ©ussi
 // element est de type char dans un premier temps pour pouvoir tester facilement,
 // il faudra modifier le prototype pour travailler sur les arbres
-Noeud *defiler(Fifo *fifo)
+Node *defiler(Fifo *fifo)
 {
     if (isEmpty(fifo))
     {
@@ -45,14 +45,14 @@ Noeud *defiler(Fifo *fifo)
     }
     else
     {
-        fifo->nbNoeuds --;
-        if (fifo->tete == fifo->taille - 1)
+        fifo->nbNoeuds--;
+        if (fifo->head == fifo->size - 1)
         {
-            int buff = fifo->tete;
-            fifo->tete = 0;
-            return (fifo->tabnoeuds)[buff];
+            int buff = fifo->head;
+            fifo->head = 0;
+            return (fifo->tabNodes)[buff];
         }
-        return (fifo->tabnoeuds)[fifo->tete++];
+        return (fifo->tabNodes)[fifo->head++];
     }
 }
 bool isEmpty(Fifo *fifo)
@@ -62,18 +62,18 @@ bool isEmpty(Fifo *fifo)
 
 bool isFull(Fifo *fifo)
 {
-    return fifo->nbNoeuds == fifo->taille;
+    return fifo->nbNoeuds == fifo->size;
 }
 
-Noeud *head(Fifo *fifo)
+Node *head(Fifo *fifo)
 {
-    return *(fifo->tabnoeuds) + (fifo->tete);
+    return *(fifo->tabNodes) + (fifo->head);
 }
 // renvoit la valeur de lâ€™Ã©lÃ©ment stockÃ© en tÃªte de la file
 
-Noeud *queue(Fifo *fifo)
+Node *queue(Fifo *fifo)
 {
-    return *(fifo->tabnoeuds) + (fifo->queue);
+    return *(fifo->tabNodes) + (fifo->queue);
 }
 // renvoit l'adresse de l'Ã©lÃ©ment stockÃ© en queue de la file
 void printFifo(Fifo *fifo)
@@ -82,13 +82,13 @@ void printFifo(Fifo *fifo)
         printf("File vide.\n");
 
     Point point;
-    int i = (fifo->tete);
+    int i = (fifo->head);
 
     while (i != (fifo->queue))
     {
-        if (i == fifo->taille)
+        if (i == fifo->size)
             i = 0;
-        point = ((fifo->tabnoeuds)[i])->point;
+        point = ((fifo->tabNodes)[i])->point;
         printf("Point[%i] = (%i, %i, %i)\n", i, point.x, point.y, point.z);
         i++;
     }

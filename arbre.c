@@ -1,130 +1,100 @@
 #include "arbre.h"
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
-/**
- * @brief Insere un nouveau point dans l'arbre.
- *
- * @param arbre
- * @param point
- */
-void inserer(Noeud **arbre, Point point)
+void inserer(Node **tree, Point point)
 {
-    if (*arbre == NULL)
+    if (*tree == NULL)
     {
-        Noeud *nouveauNoeud = malloc(sizeof(Noeud));
+        Node *nouveauNoeud = malloc(sizeof(Node));
         nouveauNoeud->point = point;
-        nouveauNoeud->enfant_gauche = NULL;
-        nouveauNoeud->enfant_droit = NULL;
+        nouveauNoeud->leftChild = NULL;
+        nouveauNoeud->rightChild = NULL;
 
-        *arbre = nouveauNoeud;
+        *tree = nouveauNoeud;
     }
     else
     {
-        if (distOrigine(point) < distOrigine((*arbre)->point))
+        if (distOrigine(point) < distOrigine((*tree)->point))
         {
-            inserer(&((*arbre)->enfant_gauche), point);
+            inserer(&((*tree)->leftChild), point);
         }
         else
         {
-            inserer(&((*arbre)->enfant_droit), point);
+            inserer(&((*tree)->rightChild), point);
         }
     }
 }
 
-/**
- * @brief Retourne le pointeur du noeud contenant le point cherché
- *
- * @param arbre
- * @param point
- * @return Noeud*
- */
-Noeud *rechercher(Noeud *arbre, Point point)
+Node *rechercher(Node *tree, Point point)
 {
-    if (arbre != NULL)
+    if (tree != NULL)
     {
-        int testEgal = egal(arbre->point, point);
-
-        if (testEgal == POINT_1_PLUS_GRAND)
+        if (dist(tree->point, point) == 0)
         {
-            return rechercher(arbre->enfant_gauche, point);
+            return tree;
         }
-        else if (testEgal == POINT_1_PLUS_PETIT)
+        else if (distOrigine(tree->point) > distOrigine(point))
         {
-            return rechercher(arbre->enfant_droit, point);
-        }
-        else if (testEgal == DISTANCE_EGAL_COORDONNEES_NON_EGAL)
-        {
-            return rechercher(arbre->enfant_droit, point);
+            return rechercher(tree->leftChild, point);
         }
         else
         {
-            return arbre;
+            return rechercher(tree->rightChild, point);
         }
     }
     return NULL;
 }
 
-/**
- * @brief Supprime un point de l'arbre.
- *
- * @param arbre
- * @param point
- */
-void supprimer(Noeud **arbre, Point point)
+void supprimer(Node **tree, Point point)
 {
 
-    if (*arbre != NULL)
+    if (*tree != NULL)
     {
-        if (egal((*arbre)->point, point) == POINT_1_PLUS_PETIT)
+        if (dist((*tree)->point, point) == 0)
         {
-            supprimer(&(*arbre)->enfant_droit, point);
-        }
-        else if (egal((*arbre)->point, point) == POINT_1_PLUS_GRAND)
-        {
-            supprimer(&(*arbre)->enfant_gauche, point);
-        }
-        else
-        {
-            free(*arbre);
-            if ((*arbre)->enfant_gauche == NULL && (*arbre)->enfant_droit == NULL)
+            free(*tree);
+            if ((*tree)->leftChild == NULL && (*tree)->rightChild == NULL)
             {
-                *arbre = NULL;
+                *tree = NULL;
             }
-            else if ((*arbre)->enfant_droit == NULL)
+            else if ((*tree)->rightChild == NULL)
             {
-                *arbre = (*arbre)->enfant_gauche;
+                *tree = (*tree)->leftChild;
             }
-            else if ((*arbre)->enfant_gauche == NULL)
+            else if ((*tree)->leftChild == NULL)
             {
-                *arbre = (*arbre)->enfant_droit;
+                *tree = (*tree)->rightChild;
             }
             else
             {
-                Noeud *temp = (*arbre)->enfant_gauche;
-                while (temp && temp->enfant_droit != NULL)
+                Node *temp = (*tree)->leftChild;
+                while (temp && temp->rightChild != NULL)
                 {
-                    temp = temp->enfant_droit;
+                    temp = temp->rightChild;
                 }
-                (*arbre)->point = temp->point;
-                supprimer(&(*arbre)->enfant_gauche, temp->point);
+                (*tree)->point = temp->point;
+                supprimer(&(*tree)->leftChild, temp->point);
             }
+        }
+        else if (distOrigine((*tree)->point) > distOrigine(point))
+        {
+            supprimer(&(*tree)->leftChild, point);
+        }
+        else
+        {
+            supprimer(&(*tree)->rightChild, point);
         }
     }
 }
 
-/**
- * @brief Affiche l'arbre.
- *
- * @param arbre
- */
-void afficher(Noeud *arbre)
+void afficher(Node *tree)
 {
-    if (arbre != NULL)
+    if (tree != NULL)
     {
-        afficher(arbre->enfant_gauche);
-        printf("%f (x : %i, y : %i, z : %i)\n", distOrigine(arbre->point),
-               (arbre->point).x, (arbre->point).y, (arbre->point).z);
-        afficher(arbre->enfant_droit);
+        afficher(tree->leftChild);
+        printf("%f (x : %i, y : %i, z : %i)\n", distOrigine(tree->point),
+               (tree->point).x, (tree->point).y, (tree->point).z);
+        afficher(tree->rightChild);
     }
 }
 
@@ -136,9 +106,9 @@ void printSpace(int count)
     }
 }
 
-int nbLine(Noeud *arbre)
+int nbLine(Node *tree)
 {
-    if (arbre == NULL)
+    if (tree == NULL)
     {
         return 0;
     }
@@ -146,22 +116,21 @@ int nbLine(Noeud *arbre)
     {
         int somme = 1;
 
-        somme += MAX(nbLine(arbre->enfant_droit), nbLine(arbre->enfant_gauche));
+        somme += MAX(nbLine(tree->rightChild), nbLine(tree->leftChild));
 
         return somme;
     }
 }
 
-void pprintTree(Noeud *arbre)
+void pprintTree(Node *tree)
 {
-    Noeud *temp;
-    int nb_line = nbLine(arbre);
-    Fifo *fifo = initFifo(pow(2,nb_line));
-    enfiler(fifo, arbre);
+    Node *temp;
+    int nb_line = nbLine(tree);
+    Fifo *fifo = initFifo(pow(2, nb_line));
+    enfiler(fifo, tree);
     int widthCount = 1;
     int startSpace = 0;
     int nbSpace = 0;
-    
 
     for (int i = 1; i < nb_line; i++)
     {
@@ -180,8 +149,8 @@ void pprintTree(Noeud *arbre)
             if (temp)
             {
                 printf("%i", (int)(10 * distOrigine(temp->point)));
-                enfiler(fifo, temp->enfant_gauche);
-                enfiler(fifo, temp->enfant_droit);
+                enfiler(fifo, temp->leftChild);
+                enfiler(fifo, temp->rightChild);
             }
             else
             {

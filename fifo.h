@@ -6,39 +6,107 @@
 #include <stdbool.h>
 #include "arbre.h"
 
-typedef struct fifo{
-int taille;  // nombre maxi dans la file
-int queue; // indice du dernier élément enfilé
-int tete; // indice du prochain élément à défiler
-int nbNoeuds; // nombre de noeuds dans la file
-struct noeud **tabnoeuds;  // adresse du 1er élément du tableau tabnoeuds
-} Fifo ;
+typedef struct fifo
+{
+    int size;               // nombre maxi dans la file
+    int queue;              // indice du dernier élément enfilé
+    int head;               // indice du prochain élément à défiler
+    int nbNoeuds;           // nombre de noeuds dans la file
+    struct node **tabNodes; // adresse du 1er élément du tableau tabnoeuds
+} Fifo;
 
-Fifo * initFifo(int size) ;
-    // renvoit une nouvelle file (vide) intitialisÃ©e
+/**
+ * @brief Renvoit une nouvelle file (vide) intitialisée.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param size 
+ * @return Fifo* 
+ */
+Fifo *initFifo(int size);
 
+/**
+ * @brief désalloue la file et ce qu'elle contient.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ */
+void freeFifo(Fifo *fifo);
 
-void freeFifo(Fifo *fifo) ;
-    // dÃ©salloue la file et ce quâ€™elle contient
+/**
+ * @brief Retourne vrai si la file est vide.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ * @return true 
+ * @return false 
+ */
+bool isEmpty(Fifo *fifo);
 
-bool isEmpty(Fifo *fifo) ;
-
+/**
+ * @brief Retourne vrai si la file est pleine.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ * @return true 
+ * @return false 
+ */
 bool isFull(Fifo *fifo);
 
-struct noeud* queue(Fifo *fifo) ;
-    // renvoit l'adresse de l'Ã©lÃ©ment stockÃ© en queue de la file
+/**
+ * @brief renvoit l'adresse de l'élément stocké en queue de la file.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ * @return struct node* 
+ */
+struct node *queue(Fifo *fifo);
 
-struct noeud* head(Fifo *fifo) ;
-    // renvoit la valeur de lâ€™Ã©lÃ©ment stockÃ© en tÃªte de la file
+/**
+ * @brief Renvoit la valeur de l'élément stocké en tête de la file.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ * @return struct node* 
+ */
+struct node *head(Fifo *fifo);
 
-bool enfiler(Fifo *fifo, struct noeud *noeud);
-    // retourne vrai si lâ€™enfilage a rÃ©ussi
-    // element est de type char dans un premier temps pour pouvoir tester facilement,
-    // il faudra modifier le prototype pour travailler sur les arbres
+/**
+ * @brief Enfile un noeud dans la file.
+ * Retourne vrai si l'enfilage a réussi.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ * @param node 
+ * @return true 
+ * @return false 
+ */
+bool enfiler(Fifo *fifo, struct node *node);
 
-struct noeud* defiler(Fifo *fifo);
-    // retourne vrai si le defilage a rÃ©ussi
+/**
+ * @brief Defile un noeud de la file.
+ * Retourne vrai si le defilage a réussi.
+ * Complexité en temps : O(1).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ * @return struct node* 
+ */
+struct node *defiler(Fifo *fifo);
 
-void printFifo(Fifo *fifo) ;
+/**
+ * @brief Affiche la file.
+ * Complexité en temps : O(n).
+ * Complexité en mémoire : O(1).
+ * 
+ * @param fifo 
+ */
+void printFifo(Fifo *fifo);
 
 #endif

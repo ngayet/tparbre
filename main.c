@@ -3,35 +3,30 @@
 #include "fifo.h"
 #include <time.h>
 
-void saisie(Noeud **arbre);
+void saisie(Node **arbre);
 Point saisieCoordonnees();
 
 int main()
 {
     srand(time(NULL));
-    Noeud *arbre = NULL;
+    Node *arbre = NULL;
 
-    for (int i = 0; i < 10; i++)
-    {
-        inserer(&arbre, (Point){rand() % 6, rand() % 6, rand() % 6});
-        // insererPoint(&arbre, (Point){i, 0, 0});
-    }
     saisie(&arbre);
 
     // Fifo * fifo = initFifo(2);
 
     // Noeud *nouveauNoeud1 = malloc(sizeof(Noeud));
     // nouveauNoeud1->point = (Point){rand() % 11, rand() % 11, rand() % 11};
-    // nouveauNoeud1->enfant_gauche = NULL;
-    // nouveauNoeud1->enfant_droit = NULL;
+    // nouveauNoeud1->leftChild = NULL;
+    // nouveauNoeud1->rightChild = NULL;
     // Noeud *nouveauNoeud2 = malloc(sizeof(Noeud));
     // nouveauNoeud2->point = (Point){rand() % 11, rand() % 11, rand() % 11};
-    // nouveauNoeud2->enfant_gauche = NULL;
-    // nouveauNoeud2->enfant_droit = NULL;
+    // nouveauNoeud2->leftChild = NULL;
+    // nouveauNoeud2->rightChild = NULL;
     // Noeud *nouveauNoeud3 = malloc(sizeof(Noeud));
     // nouveauNoeud3->point = (Point){rand() % 11, rand() % 11, rand() % 11};
-    // nouveauNoeud3->enfant_gauche = NULL;
-    // nouveauNoeud3->enfant_droit = NULL;
+    // nouveauNoeud3->leftChild = NULL;
+    // nouveauNoeud3->rightChild = NULL;
 
     // enfiler(fifo, nouveauNoeud1);
     // enfiler(fifo, nouveauNoeud2);
@@ -50,6 +45,17 @@ int main()
     // printf("head : %i, queu : %i\n",head(fifo)->point.x,queue(fifo)->point.x);
 
     return 0;
+}
+
+void insererRandomPoint(Node **arbre)
+{
+    int nb;
+    printf("Nombre de point : ");
+    scanf(" %i", &nb);
+    for (int i = 1; i <= nb; i++)
+    {
+        inserer(arbre, (Point){rand() % 6, rand() % 6, rand() % 6});
+    }
 }
 
 /**
@@ -76,21 +82,22 @@ Point saisieCoordonnees()
  *
  * @param arbre
  */
-void saisie(Noeud **arbre)
+void saisie(Node **arbre)
 {
     int reponse = 1;
 
     printf("\n");
     while (reponse != 0)
     {
-        Noeud *temp;
+        Node *temp;
         printf("========== Menu ==========\n");
         printf("0 : sortir du programme\n");
         printf("1 : inserer un point\n");
-        printf("2 : supprimer un point\n");
-        printf("3 : afficher l'arbre\n");
-        printf("4 : connaître la présence d'un point\n");
-        printf("5 : joli affichage de l'arbre\n\n");
+        printf("2 : inserer des points aléatoires\n");
+        printf("3 : supprimer un point\n");
+        printf("4 : afficher l'arbre\n");
+        printf("5 : connaître la présence d'un point\n");
+        printf("6 : joli affichage de l'arbre\n\n");
 
         printf("Votre choix ? ");
         scanf(" %i", &reponse);
@@ -103,29 +110,34 @@ void saisie(Noeud **arbre)
             break;
         case 1:
             inserer(arbre, saisieCoordonnees());
-            printf("Fini\n\n");
+            printf("Inséré.\n\n");
             break;
         case 2:
+
+            insererRandomPoint(arbre);
+            printf("Inséré.\n\n");
+            break;
+        case 3:
             supprimer(arbre, saisieCoordonnees());
             printf("Fini\n\n");
             break;
-        case 3:
+        case 4:
             afficher(*arbre);
             printf("\n");
             break;
-        case 4:
+        case 5:
             temp = (rechercher(*arbre, saisieCoordonnees()));
             if (temp != NULL)
             {
-                printf("Le point est présent dans l'arbre.\n\n");
-                printf("%f (x : %i, y : %i, z : %i)\n", distOrigine(temp->point), (temp->point).x, (temp->point).y, (temp->point).z);
+                printf("Le point est présent dans l'arbre :\n");
+                printf("%f (x : %i, y : %i, z : %i)\n\n", distOrigine(temp->point), (temp->point).x, (temp->point).y, (temp->point).z);
             }
             else
             {
                 printf("Le point n'est pas présent dans l'arbre.\n\n");
             }
             break;
-        case 5:
+        case 6:
             pprintTree(*arbre);
             printf("\n");
             break;
