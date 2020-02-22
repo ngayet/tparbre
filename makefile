@@ -1,6 +1,6 @@
-BIN=prog
+BIN=main
 OBJECTS=main.o point.o arbre.o fifo.o
-CC=gcc
+CC=gcc -g
 CFLAGS=-Wall
 
 all: $(BIN)
