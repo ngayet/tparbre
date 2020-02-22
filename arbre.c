@@ -1,31 +1,31 @@
 #include "arbre.h"
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
-void inserer(Node **tree, Point point)
+void insert(Node **tree, Point point)
 {
     if (*tree == NULL)
     {
-        Node *nouveauNoeud = malloc(sizeof(Node));
-        nouveauNoeud->point = point;
-        nouveauNoeud->leftChild = NULL;
-        nouveauNoeud->rightChild = NULL;
+        Node *newNode = malloc(sizeof(Node));
+        newNode->point = point;
+        newNode->leftChild = NULL;
+        newNode->rightChild = NULL;
 
-        *tree = nouveauNoeud;
+        *tree = newNode;
     }
     else
     {
         if (distOrigine(point) < distOrigine((*tree)->point))
         {
-            inserer(&((*tree)->leftChild), point);
+            insert(&((*tree)->leftChild), point);
         }
         else
         {
-            inserer(&((*tree)->rightChild), point);
+            insert(&((*tree)->rightChild), point);
         }
     }
 }
 
-Node *rechercher(Node *tree, Point point)
+Node *find(Node *tree, Point point)
 {
     if (tree != NULL)
     {
@@ -35,17 +35,17 @@ Node *rechercher(Node *tree, Point point)
         }
         else if (distOrigine(tree->point) > distOrigine(point))
         {
-            return rechercher(tree->leftChild, point);
+            return find(tree->leftChild, point);
         }
         else
         {
-            return rechercher(tree->rightChild, point);
+            return find(tree->rightChild, point);
         }
     }
     return NULL;
 }
 
-void supprimer(Node **tree, Point point)
+void delete (Node **tree, Point point)
 {
 
     if (*tree != NULL)
@@ -73,28 +73,28 @@ void supprimer(Node **tree, Point point)
                     temp = temp->rightChild;
                 }
                 (*tree)->point = temp->point;
-                supprimer(&(*tree)->leftChild, temp->point);
+                delete (&(*tree)->leftChild, temp->point);
             }
         }
         else if (distOrigine((*tree)->point) > distOrigine(point))
         {
-            supprimer(&(*tree)->leftChild, point);
+            delete (&(*tree)->leftChild, point);
         }
         else
         {
-            supprimer(&(*tree)->rightChild, point);
+            delete (&(*tree)->rightChild, point);
         }
     }
 }
 
-void afficher(Node *tree)
+void printTree(Node *tree)
 {
     if (tree != NULL)
     {
-        afficher(tree->leftChild);
-        printf("%f (x : %i, y : %i, z : %i)\n", distOrigine(tree->point),
+        printTree(tree->leftChild);
+        printf("Distance à l'origine : %f\n(x : %i, y : %i, z : %i)\n", distOrigine(tree->point),
                (tree->point).x, (tree->point).y, (tree->point).z);
-        afficher(tree->rightChild);
+        printTree(tree->rightChild);
     }
 }
 
@@ -114,31 +114,40 @@ int nbLine(Node *tree)
     }
     else
     {
-        int somme = 1;
-
-        somme += MAX(nbLine(tree->rightChild), nbLine(tree->leftChild));
-
-        return somme;
+        return 1 + MAX(nbLine(tree->rightChild), nbLine(tree->leftChild));
     }
 }
 
 void pprintTree(Node *tree)
 {
-    Node *temp;
+    if (tree == NULL)
+    {
+        printf("Il n'y a rien dans l'arbre !\n");
+        return;
+    }
+
     int nb_line = nbLine(tree);
+    printf("Nombre de lignes de l'arbre : %i\n", nb_line);
+    if (nb_line > 6)
+    {
+        nb_line = 6;
+        printf("Nombre de lignes affichées : 6\n");
+    }
+
+    Node *temp;
     Fifo *fifo = initFifo(pow(2, nb_line));
     enfiler(fifo, tree);
-    int widthCount = 1;
-    int startSpace = 0;
-    int nbSpace = 0;
 
+    int widthCount = 1; // Nombre de noeud dans le FIFO
+    int tempPoint;      // Variable utilisée pour factoriser une opération.
+
+    int nbSpace = 2; // Calcul de l'espacement entre valeur
     for (int i = 1; i < nb_line; i++)
     {
-        startSpace = 1 + (startSpace * 2);
         nbSpace = 2 + (2 * nbSpace);
     }
 
-    printSpace(startSpace);
+    printSpace(((nbSpace - 2) / 2)); // Premier espacement
     for (int i = 1; i <= nb_line; i++)
     {
 
@@ -148,26 +157,43 @@ void pprintTree(Node *tree)
 
             if (temp)
             {
-                printf("%i", (int)(10 * distOrigine(temp->point)));
+                tempPoint = (10 * distOrigine(temp->point));
+                if (tempPoint == 0)
+                {
+                    printf("00");
+                }
+                else
+                {
+                    printf("%i", tempPoint);
+                }
                 enfiler(fifo, temp->leftChild);
                 enfiler(fifo, temp->rightChild);
             }
             else
             {
-                // on empile quand même pour gérer l'espacement de la prochaine ligne.
+                // On empile quand même pour gérer l'espacement de la prochaine ligne.
                 printf("  ");
                 enfiler(fifo, NULL);
                 enfiler(fifo, NULL);
             }
-            printSpace(nbSpace);
+            printSpace(nbSpace); // Espacement entre valeur.
         }
 
         printf("\n");
-        startSpace = (startSpace - 1) / 2;
-        nbSpace = (nbSpace - 2) / 2;
-        printSpace(startSpace);
 
-        widthCount = fifo->nbNoeuds;
+        nbSpace = (nbSpace - 2) / 2;
+        printSpace(((nbSpace - 2) / 2)); //espacement de la ligne suivante
+
+        widthCount = fifo->nbNoeuds; // Mise à jour du nombre de noeud à afficher sur la ligne.
     }
-    printf("nombre de colonnes : %i", nb_line);
+}
+void reset(Node **tree)
+{
+    if (*tree != NULL)
+    {
+        reset(&(*tree)->leftChild);
+        reset(&(*tree)->rightChild);
+        free(*tree);
+        *tree=NULL;  
+    }
 }

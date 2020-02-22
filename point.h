@@ -19,7 +19,7 @@ typedef struct point
  *
  * @param p1    Premier point.
  * @param p2    Deuxième point.
- * @return      Un double reprensetant la distance entre deux points.
+ * @return      Un double représentant la distance entre deux points.
  */
 double dist(Point p1, Point p2);
 
