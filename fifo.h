@@ -11,7 +11,7 @@ typedef struct fifo
     int size;               // nombre maxi dans la file
     int queue;              // indice du dernier élément enfilé
     int head;               // indice du prochain élément à défiler
-    int nbNoeuds;           // nombre de noeuds dans la file
+    int nbNodes;           // nombre de noeuds dans la file
     struct node **tabNodes; // adresse du 1er élément du tableau tabnoeuds
 } Fifo;
 

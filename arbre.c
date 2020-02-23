@@ -50,7 +50,7 @@ void delete (Node **tree, Point point)
 
     if (*tree != NULL)
     {
-        if (dist((*tree)->point, point) == 0)
+        if (dist((*tree)->point, point) == 0) // si point trouvé
         {
             free(*tree);
             if ((*tree)->leftChild == NULL && (*tree)->rightChild == NULL)
@@ -66,13 +66,15 @@ void delete (Node **tree, Point point)
                 *tree = (*tree)->rightChild;
             }
             else
-            {
+            { // cas 4, on trouve le point qui doit remplacer celui du noeud.
                 Node *temp = (*tree)->leftChild;
                 while (temp && temp->rightChild != NULL)
                 {
                     temp = temp->rightChild;
                 }
+
                 (*tree)->point = temp->point;
+                //on rappelle la fonction pour supprimer le point devenu doublon.
                 delete (&(*tree)->leftChild, temp->point);
             }
         }
@@ -92,8 +94,8 @@ void printTree(Node *tree)
     if (tree != NULL)
     {
         printTree(tree->leftChild);
-        printf("Distance à l'origine : %f\n(x : %i, y : %i, z : %i)\n", distOrigine(tree->point),
-               (tree->point).x, (tree->point).y, (tree->point).z);
+        printf("Distance à l'origine : %f\n", distOrigine(tree->point));
+        printf("(x : %i, y : %i, z : %i)\n", (tree->point).x, (tree->point).y, (tree->point).z);
         printTree(tree->rightChild);
     }
 }
@@ -184,9 +186,10 @@ void pprintTree(Node *tree)
         nbSpace = (nbSpace - 2) / 2;
         printSpace(((nbSpace - 2) / 2)); //espacement de la ligne suivante
 
-        widthCount = fifo->nbNoeuds; // Mise à jour du nombre de noeud à afficher sur la ligne.
+        widthCount = fifo->nbNodes; // Mise à jour du nombre de noeud à afficher sur la ligne.
     }
 }
+
 void reset(Node **tree)
 {
     if (*tree != NULL)
@@ -194,6 +197,6 @@ void reset(Node **tree)
         reset(&(*tree)->leftChild);
         reset(&(*tree)->rightChild);
         free(*tree);
-        *tree=NULL;  
+        *tree = NULL;
     }
 }

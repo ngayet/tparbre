@@ -32,3 +32,4 @@ The "print like a real tree" feature print the point like this: distance from or
 ## Note
 
 We have setup comments to generate html documentation through Doxygen.
+Please, run your terminal in full screen mode for the pretty print of the tree.

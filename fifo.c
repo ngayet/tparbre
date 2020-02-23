@@ -7,7 +7,7 @@ Fifo *initFifo(int size)
     fifo->tabNodes = malloc(size * sizeof(Node *));
     fifo->queue = 0;
     fifo->head = 0;
-    fifo->nbNoeuds = 0;
+    fifo->nbNodes = 0;
     return fifo;
 }
 
@@ -26,9 +26,9 @@ bool enfiler(Fifo *fifo, Node *noeud)
     }
     else
     {
-        fifo->nbNoeuds++;
+        fifo->nbNodes++;
         *((fifo->tabNodes) + (fifo->queue++)) = noeud;
-        if (fifo->queue >= (fifo->size - 1))
+        if (fifo->queue >= (fifo->size))
             fifo->queue = 0;
         return true;
     }
@@ -45,7 +45,7 @@ Node *defiler(Fifo *fifo)
     }
     else
     {
-        fifo->nbNoeuds--;
+        fifo->nbNodes--;
         if (fifo->head == fifo->size - 1)
         {
             int buff = fifo->head;
@@ -57,12 +57,12 @@ Node *defiler(Fifo *fifo)
 }
 bool isEmpty(Fifo *fifo)
 {
-    return fifo->nbNoeuds == 0;
+    return fifo->nbNodes == 0;
 }
 
 bool isFull(Fifo *fifo)
 {
-    return fifo->nbNoeuds == fifo->size;
+    return fifo->nbNodes == fifo->size;
 }
 
 Node *head(Fifo *fifo)
@@ -76,20 +76,21 @@ Node *queue(Fifo *fifo)
     return *(fifo->tabNodes) + (fifo->queue);
 }
 // renvoit l'adresse de l'Ã©lÃ©ment stockÃ© en queue de la file
+
 void printFifo(Fifo *fifo)
 {
     if (isEmpty(fifo))
+    {
         printf("File vide.\n");
+        return;
+    }
 
     Point point;
     int i = (fifo->head);
-
-    while (i != (fifo->queue))
+    for (int j = 0; j < fifo->nbNodes; j++)
     {
-        if (i == fifo->size)
-            i = 0;
         point = ((fifo->tabNodes)[i])->point;
         printf("Point[%i] = (%i, %i, %i)\n", i, point.x, point.y, point.z);
-        i++;
+        i = (i + 1) % fifo->size; // utilisation du modulo découvert sur le net vraiment astucieux !
     }
 }
