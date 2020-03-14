@@ -1,26 +1,26 @@
 # Trees and points
 
-This project is dev by Sylvia Lehmann and Nicolas Gayet
+This project was dev by Sylvia Lehmann and Nicolas Gayet
 
 ## Introduction
 
-Here, we implemented a point storage in a binary tree.
+Here, we implemented a point storage in a binary tree structure.
 
 Instructions were:
-- Make arbre.h (arbre = tree) with a structure of binary tree storaging points.
+- Make arbre.h (arbre = tree) with a structure of binary tree to store the points.
 - In a arbre.c:
-  + implement an insert function where we put points in distance from origin order,
+  + implement an insert function where we put points ordered according to the distance from origin order,
   + implement a delete function,
   + implement a print function,
   + implement a test function to test the code.
 
-- Make a fifo based on a circular table, who can storage nodes of a tree.
-- Make a print with a breadth course using fifo structure.
+- Make a fifo based on a circular table, who can store nodes of a tree.
+- Make a print with a traversal using fifo structure.
 
 ## Feature
 
 We can add a point to the tree.  
-We can generate random points where coordinate is 0 to 5.  
+We can generate random points with coordinates x, y and z ranging from 0 to 5.  (les coordonnées des points générés sont compris entre 0 et 5 c'est bien ça que tu voulais dire?)
 We can delete a point.
 We can print the tree in natural order. (depth-first order)  
 We can know if a point is present.  
