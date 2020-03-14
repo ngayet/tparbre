@@ -20,8 +20,8 @@ Instructions were:
 ## Feature
 
 We can add a point to the tree.  
-We can generate random points with coordinates x, y and z ranging from 0 to 5.  (les coordonnées des points générés sont compris entre 0 et 5 c'est bien ça que tu voulais dire?)
-We can delete a point.
+We can generate random points with coordinates x, y and z ranging from 0 to 5.  
+We can delete a point.  
 We can print the tree in natural order. (depth-first order)  
 We can know if a point is present.  
 We can print the tree like a real tree.  
